@@ -32,9 +32,7 @@ function Clouds({ cloud }){
       }
 
     return(
-        <div>
-            {icon}
-        </div>
+        <div> {icon} </div>
     );
 }
 export default Clouds;

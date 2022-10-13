@@ -3,6 +3,12 @@ import '../assets/weather.css';
 import Axios from 'axios';
 import moment from 'moment';
 import Clouds from '../components/Clouds';
+import {WiHumidity, WiStrongWind} from 'react-icons/wi';
+import {MdOutlineVisibility} from 'react-icons/md';
+import {BsThermometerHalf} from 'react-icons/bs';
+import {VscLocation} from 'react-icons/vsc';
+import {MdCalendarToday} from 'react-icons/md';
+
 
 const Forecast = () => {
     const [city, setCity] = useState('');
@@ -53,46 +59,53 @@ const Forecast = () => {
             <main className='main-content'>
                 <div className='side-info'>
                     { data ? 
-                        <p>{data.name}
+                        <p id='city'><VscLocation/> {data.name}
                             {data.sys ? <span>, {data.sys.country}</span> : null} 
                         </p> : null 
                     }
-                    { data ? <p className='date'> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
+                    { data ? <p className='date'><MdCalendarToday /> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
                 </div>
                 <div className='main-info'>
                     { data.main ? <h1 id='temperature'>{ data.main.temp.toFixed() }<span>°C</span></h1> : null }
                     { data.main ?
-                        <p className='hi-low'>
-                            Hi: {data.main.temp_max.toFixed()} / Low: {data.main.temp_min.toFixed()}
+                        <p>
+                            Hi: {data.main.temp_max.toFixed(1)} °C / Low: {data.main.temp_min.toFixed(1)} °C
                         </p>
                         : null 
                     }  
                 </div>
-                <div>
-                    <Clouds id='cloud' cloud = {data.weather? data.weather[0].main : null}/>
+                <div className='cloud-container'>
+                    <Clouds cloud = {data.weather? data.weather[0].main : null}/>
                 </div>
             </main>
+            
+            <div className='cloud-description'>
+                    {data.weather? <p>{data.weather[0].description}</p> : null }
+            </div>
 
             {/* bottom part */}
 
             <div className='extra'>
                 <div className='extra-info humidity'>
-                    {data.main ? <p>{data.main.humidity}%</p> : null}
+                    {data.main ? <p><WiHumidity/> {data.main.humidity}%</p> : null}
                     <h3>Humidity</h3>
                 </div>
                 <div className='extra-info visibility'>
-                    {data ? <p>{data.visibility / 1000} km</p> : null}
+                    {data ? <p><MdOutlineVisibility/> {data.visibility / 1000} km</p> : null}
                     <h3>Visibility</h3>
                 </div>
                 <div className='extra-info air-pressure'>
-                    {data.main ? <p>{data.main.pressure} hPa</p> : null}
+                    {data.main ? <p><BsThermometerHalf/> {data.main.pressure} hPa</p> : null}
                     <h3>Air pressure</h3>
                 </div>
                 <div className='extra-info wind'>
-                    {data.wind ? <p>{data.wind.speed} kph</p> : null}
+                    {data.wind ? <p><WiStrongWind/> {data.wind.speed} kph</p> : null}
                     <h3>Wind</h3>
                 </div>
             </div>
+            <footer>
+                <h5>Data provided by: <a href='https://www.openweathermap.org'>openweathermap.org</a></h5>
+            </footer>
         </>
     );
 }
