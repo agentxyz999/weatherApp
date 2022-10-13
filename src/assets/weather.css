@@ -49,8 +49,9 @@
     margin: 0 auto;
   }
   #cloud{
-    width: 140px;
-    height: 140px;
+    width: 200px;
+    height: 200px;
+    color: #eee;
     align-self: center;
   }
   .main-content .side-info{

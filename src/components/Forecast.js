@@ -13,7 +13,8 @@ const Forecast = () => {
     const searchCity = (e) => {
         if (e.key === 'Enter') {
             // call the API
-            Axios.get(url).then((res) => {
+            Axios.get(url)
+            .then((res) => {
                 setData(res.data);
             })
             // then set the input field to blank
@@ -34,8 +35,6 @@ const Forecast = () => {
         localStorage.setItem("data", JSON.stringify(data));
     }, [data]);
 
-    // console.log(data);
-
     return (
         <>
             {/* Search city/location */}
@@ -53,7 +52,11 @@ const Forecast = () => {
             {/* main body  */}
             <main className='main-content'>
                 <div className='side-info'>
-                    { data ? <p>{data.name}</p> : null }
+                    { data ? 
+                        <p>{data.name}
+                            {data.sys ? <span>, {data.sys.country}</span> : null} 
+                        </p> : null 
+                    }
                     { data ? <p className='date'> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
                 </div>
                 <div className='main-info'>
@@ -66,7 +69,7 @@ const Forecast = () => {
                     }  
                 </div>
                 <div>
-                    <Clouds id='cloud' data={data} />
+                    <Clouds id='cloud' cloud = {data.weather? data.weather[0].main : null}/>
                 </div>
             </main>
 

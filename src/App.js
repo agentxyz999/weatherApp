@@ -6,5 +6,4 @@ function App() {
         <Forecast />
     );
 }
-
 export default App;
