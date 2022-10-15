@@ -9,7 +9,6 @@ import {BsThermometerHalf} from 'react-icons/bs';
 import {VscLocation} from 'react-icons/vsc';
 import {MdCalendarToday} from 'react-icons/md';
 
-
 const Forecast = () => {
     const [city, setCity] = useState('Manila');
     const [userCity, setUserCity] = useState('');
@@ -38,8 +37,8 @@ const Forecast = () => {
             setData(res.data);
         })
         localStorage.setItem("data", JSON.stringify(data));
-    }, [city]);
-    
+    }, [data]);
+
     return (
         <>
             {/* Search city/location */}
@@ -75,11 +74,16 @@ const Forecast = () => {
                         : null 
                     }  
                 </div>
+                {/* Cloud Ico/image */}
                 <div className='cloud-container'>
                     <Clouds cloud = {data.weather? data.weather[0].main : null}/>
                 </div>
             </main>
-            
+            {/* Sunrise and Sunset */}
+            <div className='sunrise-sunset'>
+                <p className='sunrise'>Sunrise : {data.sys ? <span>{moment.unix(data.sys.sunrise).format("hh:mm")} AM</span> : null}</p>
+                <p className='sunset'>Sunset : {data.sys ? <span>{moment.unix(data.sys.sunset).format("hh:mm")} PM</span> : null}</p>
+            </div>
             <div className='cloud-description'>
                     {data.weather? <p>{data.weather[0].description}</p> : null }
             </div>
