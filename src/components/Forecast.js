@@ -11,23 +11,18 @@ import {MdCalendarToday} from 'react-icons/md';
 
 
 const Forecast = () => {
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState('Manila');
+    const [userCity, setUserCity] = useState('');
     const [data, setData] = useState({});
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=96c1263a1cddce26bf0772ba670dac50&units=metric`;
 
     const searchCity = (e) => {
         if (e.key === 'Enter') {
-            // call the API
-            Axios.get(url)
-            .then((res) => {
-                setData(res.data);
-            })
-            // then set the input field to blank
-            setCity('');
+            setCity(userCity);
+            setUserCity('');
         }
     }
-
     //get data from localStorage
     useEffect(() => {
         const dataJSON = JSON.parse(localStorage.getItem("data"));
@@ -38,9 +33,13 @@ const Forecast = () => {
 
     //store API to local storage(temporarily)
     useEffect(() => {
+        Axios.get(url)
+        .then((res) => {
+            setData(res.data);
+        })
         localStorage.setItem("data", JSON.stringify(data));
-    }, [data]);
-
+    }, [city]);
+    
     return (
         <>
             {/* Search city/location */}
@@ -49,8 +48,8 @@ const Forecast = () => {
                     type="text"
                     name="search"
                     placeholder="Try Taipei or Tokyo..."
-                    value={ city }
-                    onChange={ e => setCity(e.target.value) }
+                    value={ userCity }
+                    onChange={ e => setUserCity(e.target.value) }
                     onKeyPress={ searchCity }
                 />
             </div>
@@ -59,11 +58,13 @@ const Forecast = () => {
             <main className='main-content'>
                 <div className='side-info'>
                     { data ? 
-                        <p id='city'><VscLocation/> {data.name}
+                        <p id='city'>
+                            <VscLocation className='info-icons'/> 
+                            {data.name}
                             {data.sys ? <span>, {data.sys.country}</span> : null} 
                         </p> : null 
                     }
-                    { data ? <p className='date'><MdCalendarToday /> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
+                    { data ? <p id='date'><MdCalendarToday className='info-icons'/> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
                 </div>
                 <div className='main-info'>
                     { data.main ? <h1 id='temperature'>{ data.main.temp.toFixed() }<span>°C</span></h1> : null }
@@ -87,19 +88,19 @@ const Forecast = () => {
 
             <div className='extra'>
                 <div className='extra-info humidity'>
-                    {data.main ? <p><WiHumidity/> {data.main.humidity}%</p> : null}
+                    {data.main ? <p><WiHumidity className='info-icons'/> {data.main.humidity}%</p> : null}
                     <h3>Humidity</h3>
                 </div>
                 <div className='extra-info visibility'>
-                    {data ? <p><MdOutlineVisibility/> {data.visibility / 1000} km</p> : null}
+                    {data ? <p><MdOutlineVisibility className='info-icons'/> {data.visibility / 1000} km</p> : null}
                     <h3>Visibility</h3>
                 </div>
                 <div className='extra-info air-pressure'>
-                    {data.main ? <p><BsThermometerHalf/> {data.main.pressure} hPa</p> : null}
+                    {data.main ? <p><BsThermometerHalf className='info-icons'/> {data.main.pressure} hPa</p> : null}
                     <h3>Air pressure</h3>
                 </div>
                 <div className='extra-info wind'>
-                    {data.wind ? <p><WiStrongWind/> {data.wind.speed} kph</p> : null}
+                    {data.wind ? <p><WiStrongWind className='info-icons'/> {data.wind.speed} kph</p> : null}
                     <h3>Wind</h3>
                 </div>
             </div>

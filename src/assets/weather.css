@@ -127,11 +127,20 @@
     vertical-align: middle;
     align-self: center;
     font-size: 1.4rem;
-    padding: 20px;
-    
+    padding: 20px; 
   }
   .extra-info h3{
     border-bottom: 1px solid rgba(255,255,255, 0.8);
+  }
+  .side-info .info-icons,
+  .extra-info .info-icons{
+    color: #F4C673;
+    background: rgba(255,255,255, 0.2);
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    padding: 6px;
+    vertical-align: middle;
   }
   footer{
     width: 100%;
