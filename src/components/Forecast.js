@@ -4,8 +4,8 @@ import Axios from 'axios';
 import moment from 'moment';
 import Clouds from '../components/Clouds';
 import {WiHumidity, WiStrongWind} from 'react-icons/wi';
-import {MdOutlineVisibility} from 'react-icons/md';
 import {BsThermometerHalf} from 'react-icons/bs';
+import {MdOutlineVisibility} from 'react-icons/md';
 import {VscLocation} from 'react-icons/vsc';
 import {MdCalendarToday} from 'react-icons/md';
 
@@ -63,7 +63,7 @@ const Forecast = () => {
                             {data.sys ? <span>, {data.sys.country}</span> : null} 
                         </p> : null 
                     }
-                    { data ? <p id='date'><MdCalendarToday className='info-icons'/> {moment.unix(data.dt).format("MMM Do ddd")} </p> : null }
+                    { data ? <p id='date'><MdCalendarToday className='info-icons'/> {moment.unix(data.dt).format("MMM Do ddd HH:mm:ss")} </p> : null }
                 </div>
                 <div className='main-info'>
                     { data.main ? <h1 id='temperature'>{ data.main.temp.toFixed() }<span>°C</span></h1> : null }
