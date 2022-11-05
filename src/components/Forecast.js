@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/weather.css';
-import Axios from 'axios';
 import moment from 'moment';
 import Clouds from '../components/Clouds';
 import {WiHumidity, WiStrongWind} from 'react-icons/wi';
@@ -8,18 +7,16 @@ import {BsThermometerHalf} from 'react-icons/bs';
 import {MdOutlineVisibility} from 'react-icons/md';
 import {VscLocation} from 'react-icons/vsc';
 import {MdCalendarToday} from 'react-icons/md';
+import { getWeather } from '../services/weather-service';
 
 const Forecast = () => {
     const [city, setCity] = useState('Manila');
-    const [userCity, setUserCity] = useState('');
     const [data, setData] = useState({});
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=96c1263a1cddce26bf0772ba670dac50&units=metric`;
+    const timeDiff = (data.timezone / 3600) - 8;
 
     const searchCity = (e) => {
         if (e.key === 'Enter') {
-            setCity(userCity);
-            setUserCity('');
+            initSearch();
         }
     }
     //get data from localStorage
@@ -27,17 +24,26 @@ const Forecast = () => {
         const dataJSON = JSON.parse(localStorage.getItem("data"));
         if (dataJSON) {
             setData(dataJSON);
+            setCity(dataJSON.name);
+            console.log(dataJSON);
+        }else{
+            initSearch();
+        }
+        const interval = setInterval(() => {
+            initSearch();
+        }, 60000);
+        return () => {
+            clearInterval( interval );
         }
     }, []);
 
-    //store API to local storage(temporarily)
-    useEffect(() => {
-        Axios.get(url)
+    const initSearch = () => {
+        getWeather(city)
         .then((res) => {
             setData(res.data);
-        })
-        localStorage.setItem("data", JSON.stringify(data));
-    }, [data]);
+            localStorage.setItem("data", JSON.stringify(res.data));
+        });
+    }
 
     return (
         <>
@@ -47,8 +53,8 @@ const Forecast = () => {
                     type="text"
                     name="search"
                     placeholder="Try Taipei or Tokyo..."
-                    value={ userCity }
-                    onChange={ e => setUserCity(e.target.value) }
+                    value={ city }
+                    onChange={ e => setCity(e.target.value) }
                     onKeyPress={ searchCity }
                 />
             </div>
@@ -63,7 +69,7 @@ const Forecast = () => {
                             {data.sys ? <span>, {data.sys.country}</span> : null} 
                         </p> : null 
                     }
-                    { data ? <p id='date'><MdCalendarToday className='info-icons'/> {moment.unix(data.dt).format("MMM Do ddd HH:mm:ss")} </p> : null }
+                    { data ? <p id='date'><MdCalendarToday className='info-icons'/> {moment().add(timeDiff, 'hours').format("MMM Do ddd HH:mm")} </p> : null }
                 </div>
                 <div className='main-info'>
                     { data.main ? <h1 id='temperature'>{ data.main.temp.toFixed() }<span>°C</span></h1> : null }
