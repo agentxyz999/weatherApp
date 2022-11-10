@@ -214,3 +214,35 @@
       border-radius: 50%;
     }
   }
+  /* small devices or mobile phones */
+ @media only screen and (max-width: 400px){
+  .search input{
+    width: 80%;
+  }
+  .main-content .side-info{
+    flex-direction: column;
+    top: 40px;
+    text-align: left;
+    font-size: 1.2rem;
+    min-height: 100px;
+    padding-top: 20px;
+  }
+  .main-content{
+    margin-top: 90px;
+  }
+  .main-content{
+    height: 320px;
+  }
+  .main-info span{
+    top: 40px;
+    right: -70px;
+  }
+  .main-info h1{
+    font-size: 10rem;
+  }
+  .sunrise, .sunset{
+    display: block;
+    margin: 10px auto;
+    width: 80vw;
+  }
+ }
