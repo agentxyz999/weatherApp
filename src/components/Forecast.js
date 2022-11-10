@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import '../assets/weather.css';
 import moment from 'moment';
 import Clouds from '../components/Clouds';
-import {WiHumidity, WiStrongWind} from 'react-icons/wi';
-import {BsThermometerHalf} from 'react-icons/bs';
-import {MdOutlineVisibility} from 'react-icons/md';
-import {VscLocation} from 'react-icons/vsc';
-import {MdCalendarToday} from 'react-icons/md';
+import { WiHumidity, WiStrongWind } from 'react-icons/wi';
+import { BsThermometerHalf } from 'react-icons/bs';
+import { MdOutlineVisibility } from 'react-icons/md';
+import { VscLocation } from 'react-icons/vsc';
+import { MdCalendarToday } from 'react-icons/md';
 import { getWeather } from '../services/weather-service';
 
 const Forecast = () => {
